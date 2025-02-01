@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot - Enter Name</title>
+    <link rel="stylesheet" href="/static/css/style.css"> <!-- Updated to absolute path -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Additional styles for third page */
+        .container {
+            width: 100%;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .input-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 50px;
+        }
+
+        .input-section input {
+            padding: 15px;
+            width: 60%;
+            font-size: 1.2rem;
+            margin-right: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .input-section button {
+            padding: 15px 30px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .input-section button:hover {
+            background-color: #45a049;
+        }
+
+        /* Loading and Status Elements */
+        #loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        #status {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Welcome to Micro Mind Chatbot</h1>
+            <p>Let's get started! Tell me the name of the person you want to talk to.</p>
+        </header>
+
+        <section class="input-section">
+            <input type="text" id="userName" placeholder="Enter name of the person you want to talk to" />
+            <button onclick="startWhatsAppBot()">Start Chat</button>
+        </section>
+        <div id="loading">Loading...</div>
+        <div id="status"></div>
+        <script>
+            function startWhatsAppBot() {
+                const username = document.getElementById('userName').value;
+                const loading = document.getElementById('loading');
+                const status = document.getElementById('status');
+
+                if (!username) {
+                    status.className = 'error';
+                    status.innerHTML = 'Please enter a username';
+                    return;
+                }
+
+                loading.style.display = 'block';
+                status.innerHTML = '';
+
+                fetch('/start_whatsapp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username: username })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    loading.style.display = 'none';
+                    status.className = data.error ? 'error' : 'success';
+                    status.innerHTML = data.message || data.error;
+                })
+                .catch(error => {
+                    loading.style.display = 'none';
+                    status.className = 'error';
+                    status.innerHTML = 'Error: ' + error;
+                });
+            }
+
+            // Add Enter key support
+            document.getElementById('userName').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    startWhatsAppBot();
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>
