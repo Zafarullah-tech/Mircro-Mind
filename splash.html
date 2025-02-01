@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Splash Screen</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+        }
+        #splash {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            animation: fadeInZoom 5s forwards;
+        }
+        .logo {
+            width: 100%;
+            height: 100%;
+            background: url('/static/image/Micro mind.gif') no-repeat center center;
+            background-size: contain;
+        }
+        @keyframes fadeInZoom {
+            0% {
+                opacity: 0;
+                transform: scale(0.4); /* Starts small for zoom-in effect */
+            }
+            100% {
+                opacity: 1;
+                transform: scale(0.8); /* Ends at original size */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="splash">
+        <div class="logo"></div>
+    </div>
+    <script>
+        // Redirect to the landing page after 5 seconds
+        setTimeout(function() {
+            window.location.href = "/landing";
+        }, 8000); // 5000 milliseconds = 5 seconds
+    </script>
+</body>
+</html>
